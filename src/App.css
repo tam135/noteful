@@ -1,33 +1,106 @@
-.App {
-  text-align: center;
+body {
+    margin: 0;
+    padding: 0;
+    
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.app-header {
+    height: 100px;
+    background-color: rgb(5, 40, 71);
+    text-align: center;
+    margin-top: 0;
+    width: 80%;
+    float: right;
+
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.app-header a:hover {
+    color: #EAEBEC;
+    cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+.app-header a {
+    color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+    margin-top: 0;
+}
+
+
+nav {
+    background-color: rgb(2, 32, 58);
+    list-style-type: none;
+    width: 20%;
+    text-decoration: none;
+    position: fixed;
+    height: 100%;
+}
+nav ul {
+    margin-top: 100px;
+}
+nav>ul>li{
+    list-style-type: none;
+    background-color:  rgb(14, 27, 39);
+    text-decoration: none;
+    height: 50px;
+}
+
+nav p{
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+nav p:hover {
+    color: #B7C012;
+    
+}
+
+nav a{
+    text-decoration: none;
+}
+
+.noteList {
+    background-color: rgb(8, 45, 78);
+    width: 80%;
+    float: right;
+    margin-top: 0%;
+    
+}
+
+.noteList p {
+    text-decoration: none;
+    color: white;
+}
+
+.noteList h3 {
+    color: white;
+    text-decoration: none;
+}
+
+.note a:hover{
+    color: #B7C012;
+    cursor: pointer;
+}
+
+.note a {
+    text-decoration: none;
+    color: white;
+    
+}
+.note {
+    list-style-type: none;
+    width: 350px;
+    padding: 10px;
+    background-color: rgb(14, 27, 39);
+    margin: 15px;
+    text-decoration: none;
+    
+}
+
+.contentInfo {
+    width: 500px;
+    margin-left: 25%;
+    margin-top: 7%;
 }
