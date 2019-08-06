@@ -65,6 +65,17 @@ class App extends Component {
         })
     }
 
+    handleUpdateNote = updatedNote => {
+        const newNotes = this.state.notes.map(n =>
+            (n.id === updatedNote.id)
+                ? updatedNote
+                : n
+        )
+        this.setState({
+            notes: newNotes
+        })
+    }
+
     renderNavRoutes() {
         return (
             <>
@@ -115,6 +126,7 @@ class App extends Component {
                     path='/add-note'
                     component={AddNote}
                 />
+                
             </>
         )
     }
@@ -126,6 +138,7 @@ class App extends Component {
             addFolder: this.handleAddFolder,
             addNote: this.handleAddNote,
             deleteNote: this.handleDeleteNote,
+            updateNote: this.handleUpdateNote,
         }
         return (
             <ApiContext.Provider value={value}>
