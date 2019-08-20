@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import config from '../config'
-import ApiContext from '../Apicontext'
+import ApiContext from '../ApiContext'
+import { findFolder } from '../notes-helpers';
 
-export default class updateNote extends Component {
+export default class UpdateNote extends Component {
     static propTypes = {
         match: PropTypes.shape({
             params: PropTypes.object,
@@ -93,6 +94,19 @@ export default class updateNote extends Component {
     };
 
     render() {
+        const folders = this.props.folders;
+        let getFolder = {};
+        if (!folders || folders.length <= 0) {
+            // Display a message or Show a Loading Gif here
+            return <div>Loading...</div>;
+        } else {
+            getFolder = findFolder(folders, this.state['folder_id']);
+        }
+        if (!getFolder) {
+            // Display a message or Show a Loading Gif here
+            return <div>Loading...</div>;
+        }
+
         const { name} = this.state
         return (
             <section className='UpdateNoteForm'>

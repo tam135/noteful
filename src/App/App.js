@@ -10,48 +10,22 @@ import AddNote from '../AddNote/AddNote'
 import ApiContext from '../ApiContext'
 import config from '../config'
 import './App.css'
+import UpdateNote from '../UpdateNote/UpdateNote'
 
 class App extends Component {
     state = {
         notes: [],
         folders: [],
+        error: null,
     };
 
-    componentDidMount() {
-        Promise.all([
-            fetch(config.API_ENDPOINT_FOLDER, {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${config.API_KEY}`
-                }
-            }),
-            fetch(config.API_ENDPOINT_NOTE, {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${config.API_KEY}`
-                }
-            })
-        ])
-            .then(([notesRes, foldersRes]) => {
-                if (!notesRes.ok)
-                    return notesRes.json().then(e => Promise.reject(e))
-                if (!foldersRes.ok)
-                    return foldersRes.json().then(e => Promise.reject(e))
-
-                return Promise.all([
-                    notesRes.json(),
-                    foldersRes.json(),
-                ])
-            })
-            .then(([notes, folders]) => {
-                this.setState({ notes, folders })
-            })
-            .catch(error => {
-                console.error({ error })
-            })
+    setFolder = folders => {
+        this.setState({folders, error: null});
     }
+
+    setNotes = notes => {
+        this.setState({ notes, error: null });
+    };
 
     handleAddFolder = folder => {
         this.setState({
@@ -87,8 +61,46 @@ class App extends Component {
             notes: newNotes
         })
     }
+    
+    componentDidMount() {
+        Promise.all([
+            fetch(config.API_ENDPOINT_FOLDER, {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${config.API_KEY}`
+                }
+            }),
+            fetch(config.API_ENDPOINT_NOTE, {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${config.API_KEY}`
+                }
+            })
+        ])
+            .then(([notesRes, foldersRes]) => {
+                if (!notesRes.ok)
+                    return notesRes.json().then(e => Promise.reject(e))
+                if (!foldersRes.ok)
+                    return foldersRes.json().then(e => Promise.reject(e))
+
+                return Promise.all([
+                    notesRes.json(),
+                    foldersRes.json(),
+                ])
+            })
+            .then(([notes, folders]) => {
+                this.setState({ notes, folders, error: null })
+            })
+            .catch(error => {
+                console.error({ error })
+            })
+    }
 
     renderNavRoutes() {
+        const notes = this.state.notes;
+        const folders = this.state.folders;
         return (
             <>
                 {['/', '/folder/:folderId'].map(path =>
@@ -96,7 +108,9 @@ class App extends Component {
                         exact
                         key={path}
                         path={path}
-                        component={NoteListNav}
+                        render={routeProps => (
+                            <NoteListNav folders={folders} notes={notes} {...routeProps}/>
+                        )}
                     />
                 )}
                 <Route
@@ -132,13 +146,36 @@ class App extends Component {
                 />
                 <Route
                     path='/add-folder'
-                    component={AddFolder}
+                    render={routeProps => {
+                        return (
+                            <AddFolder
+                                {...routeProps}
+                                folders={this.state.folders}
+                                addFolder={this.handleAddFolder}
+                            />
+                        )
+                    }}
                 />
                 <Route
-                    path='/add-note'
-                    component={AddNote}
+                    path="/add-note"
+                    render={routeProps => (
+                        <AddNote
+                            {...routeProps}
+                            addNote={this.handleAddNote}
+                            folders={this.state.folders}
+                        />
+                    )}
                 />
-                
+                <Route
+                    path="/update-note/:noteId"
+                    render={routeProps => (
+                        <UpdateNote
+                            {...routeProps}
+                            updateNote={this.handleUpdateNote}
+                            folders={this.state.folders}
+                        />
+                    )}
+                />    
             </>
         )
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 
-function deleteNote(noteId, callBack) {
-    fetch(config.API_ENDPOINT_NOTE + `/${noteId}`, {
+function deleteFolder(FolderId, callBack) {
+    fetch(config.API_ENDPOINT_FOLDER + `/${FolderId}`, {
         method: "DELETE",
         headers: { "content-type": "application/json" }
     })
@@ -14,11 +14,11 @@ function deleteNote(noteId, callBack) {
             return res.json();
         })
         .then(data=>{
-            callback(noteId);
+            callback(FolderId);
         })
         .catch(error => {
             console.log(error);
         })
 }
 
-export default deleteNote
+export default deleteFolder
